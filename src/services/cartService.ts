@@ -13,7 +13,7 @@ export const addCart = async (product: string, quantity: number) => {
     );
 
     if (res.data.status === "success") {
-      toast.success("Thêm sản phẩm thành công!");
+      toast.success("Đã thêm vào giỏ hàng!");
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -43,5 +43,41 @@ export const getCart = async () => {
       toast.error("Giỏ hàng lỗi");
     }
     return [];
+  }
+};
+
+export const deleteCartItem = async (id: string) => {
+  try {
+    const res = await axios.delete(`http://127.0.0.1:3000/api/cart/${id}`, {
+      withCredentials: true,
+    });
+
+    if (res.data.status === "success") {
+      toast.success("Đã xóa sản phẩm!");
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      toast.error(error.response?.data?.message || "Xóa thất bại");
+    } else {
+      toast.error("Xóa thất bại");
+    }
+  }
+};
+
+export const updateQuantityItem = async (id: string, quantity: number) => {
+  try {
+    await axios.patch(
+      `http://127.0.0.1:3000/api/cart/${id}`,
+      {
+        quantity,
+      },
+      { withCredentials: true }
+    );
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      toast.error(error.response?.data?.message || "Xóa thất bại");
+    } else {
+      toast.error("Xóa thất bại");
+    }
   }
 };

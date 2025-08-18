@@ -4,7 +4,7 @@ import CartItems from "../components/Cart/CartItems";
 import CartSummary from "../components/Cart/CartSummary";
 import Layout from "../components/Layout/Layout";
 import type { Cart } from "../types/cart";
-import { getCart } from "../services/cartService";
+import { deleteCartItem, getCart } from "../services/cartService";
 
 //localhost:3000/img/products/asus-vivobook-15-2025-1.png.png
 
@@ -16,13 +16,22 @@ function CartPage() {
     })();
   }, []);
 
+  async function handleDeleteItem(id: string) {
+    await deleteCartItem(id);
+    setCart(cart.filter((item) => item._id !== id));
+  }
+
   return (
     <Layout>
       <h1>Giỏ hàng</h1>
       <div className="cart-container">
         <div>
           {cart.map((item) => (
-            <CartItems item={item} key={item.id} />
+            <CartItems
+              item={item}
+              key={item._id}
+              handleDeleteItem={handleDeleteItem}
+            />
           ))}
         </div>
 

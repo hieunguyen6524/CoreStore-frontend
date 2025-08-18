@@ -1,14 +1,73 @@
 import { Trash2 } from "lucide-react";
 import type { Cart } from "../../types/cart";
+import { useMemo, useState } from "react";
+import debounce from "lodash/debounce";
+import { updateQuantityItem } from "../../services/cartService";
+import toast from "react-hot-toast";
 
 interface CartItemsProps {
   item: Cart;
+  handleDeleteItem: (id: string) => Promise<void>;
 }
 
-function CartItems({ item }: CartItemsProps) {
+function CartItems({ item, handleDeleteItem }: CartItemsProps) {
+  const [quantity, setQuantity] = useState(item.quantity);
+
+  console.log(item);
+  const debounceUpdate = useMemo(
+    () =>
+      debounce(async (newQuantity: number) => {
+        await updateQuantityItem(item._id, newQuantity);
+        // console.log("Updated quantity:", newQuantity);
+      }, 500),
+    [item._id]
+  );
+
+  function handleIncrease() {
+    setQuantity((prev) => {
+      if (prev < item.product.stock) {
+        const newQuantity = prev + 1;
+        debounceUpdate(newQuantity);
+        return newQuantity;
+      } else {
+        toast(`Kho hiện chỉ còn ${item.product.stock} sản phẩm.`, {
+          icon: "😔",
+        });
+      }
+      return prev;
+    });
+  }
+
+  function handleDecrease() {
+    setQuantity((prev) => {
+      const newQuantity = Math.max(1, prev - 1);
+      debounceUpdate(newQuantity);
+      return newQuantity;
+    });
+  }
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = parseInt(e.target.value, 10);
+    if (!isNaN(value) && value >= 1) {
+      if (value >= item.product.stock) {
+        setQuantity(item.product.stock);
+        toast(`Kho hiện chỉ còn ${item.product.stock} sản phẩm.`, {
+          icon: "😔",
+        });
+      } else setQuantity(value);
+    }
+  }
+
+  // Khi input mất focus → gọi API luôn
+  async function handleBlur() {
+    await updateQuantityItem(item._id, quantity);
+
+    // console.log("Updated via blur:", quantity);
+  }
+
   return (
     <div className="cart-items">
-      <div className="cart-item" key={item.id}>
+      <div className="cart-item" key={item._id}>
         <div className="item-info">
           <img src={item.product.thumbnail} alt={item.product.name} />
           <div>
@@ -23,11 +82,22 @@ function CartItems({ item }: CartItemsProps) {
 
         <div className="item-actions">
           <div className="quantity">
-            <button>−</button>
-            <span>{item.quantity}</span>
-            <button>+</button>
+            <button onClick={handleDecrease}>−</button>
+            {/* <span>{item.quantity}</span> */}
+            <input
+              type="number"
+              min={1}
+              value={quantity}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className="w-16 text-center border rounded"
+            />
+            <button onClick={handleIncrease}>+</button>
           </div>
-          <button className="delete-btn">
+          <button
+            className="delete-btn"
+            onClick={() => handleDeleteItem(item._id)}
+          >
             <Trash2 />
           </button>
         </div>
