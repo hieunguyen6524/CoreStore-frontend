@@ -1,0 +1,79 @@
+@use "variables";
+.footer {
+  background: #fff;
+  padding: 2rem 0;
+  border-top: 1px solid #ddd;
+
+  &__top {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  &__col {
+    display: flex;
+    flex-direction: column;
+    font-size: variables.$text-m;
+  }
+
+  &__title {
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    font-size: 1.4rem;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__item {
+    font-size: 1.4rem;
+    color: #555;
+    cursor: pointer;
+    &:hover {
+      color: #007bff;
+    }
+  }
+
+  &__socials {
+    display: flex;
+    gap: 1rem;
+    font-size: 2rem;
+    // svg {
+    //   cursor: pointer;
+    //   transition: color 0.3s;
+    //   &:hover {
+    //     color: #007bff;
+    //   }
+    // }
+    img {
+      max-height: 30px;
+      cursor: pointer;
+    }
+  }
+
+  &__logos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    img {
+      max-height: 30px;
+    }
+  }
+
+  &__bottom {
+    border-top: 1px solid #ddd;
+    padding-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    color: #777;
+    img {
+      max-height: 52px;
+    }
+  }
+}

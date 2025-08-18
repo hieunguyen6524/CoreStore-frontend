@@ -1,0 +1,162 @@
+@use "variables";
+.cart-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+
+  .cart-items {
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+
+      .item-info {
+        display: flex;
+        gap: 1rem;
+
+        img {
+          width: 70px;
+          height: 70px;
+          object-fit: cover;
+          border-radius: 6px;
+        }
+
+        h3 {
+          font-size: variables.$text-name-product;
+          font-weight: 600;
+        }
+
+        p {
+          font-size: variables.$text-m;
+          color: #666;
+        }
+
+        .price {
+          font-size: variables.$text-finalPrice;
+          font-weight: 600;
+          margin-top: 0.2rem;
+        }
+      }
+
+      .item-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .quantity {
+          display: flex;
+          border: 1px solid #ddd;
+          border-radius: 6px;
+          overflow: hidden;
+
+          button {
+            padding: 0.3rem 0.8rem;
+            font-size: 1.2rem;
+            border: none;
+            background: #f5f5f5;
+            cursor: pointer;
+
+            &:hover {
+              background: #e5e5e5;
+            }
+          }
+
+          span {
+            padding: 0.3rem 0.8rem;
+            font-weight: 500;
+          }
+        }
+
+        .delete-btn {
+          background: none;
+          border: none;
+          color: red;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .order-summary {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    height: fit-content;
+
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+
+      &.discount {
+        color: red;
+      }
+
+      &.total {
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+    }
+
+    hr {
+      margin: 0.8rem 0;
+    }
+
+    .promo-code {
+      display: flex;
+      margin-top: 1rem;
+
+      input {
+        flex: 1;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 6px 0 0 6px;
+        font-size: 0.9rem;
+      }
+
+      button {
+        background: black;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0 6px 6px 0;
+        cursor: pointer;
+
+        &:hover {
+          background: #333;
+        }
+      }
+    }
+
+    .checkout-btn {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 0.8rem;
+      background: black;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+
+      &:hover {
+        background: #333;
+      }
+    }
+  }
+}

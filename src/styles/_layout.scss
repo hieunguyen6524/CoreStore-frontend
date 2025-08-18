@@ -1,0 +1,11 @@
+@use "variables";
+
+html {
+  font-size: 62.5%; // 62.5% của 16px = 10px
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}

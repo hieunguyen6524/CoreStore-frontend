@@ -1,0 +1,99 @@
+@use "variables";
+.header {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  overflow: hidden; /* chặn phần logo tràn ra ngoài */
+  padding: 0 20px;
+  background: #fff;
+  justify-content: space-between;
+}
+
+.header__logo {
+  height: 100%;
+  // background-color: black;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 200%;
+  width: auto;
+  object-fit: contain;
+  padding-right: 16px;
+  cursor: pointer;
+}
+
+.header__nav {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+  max-width: 400px;
+}
+
+.header__nav a {
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.header__search {
+  display: flex;
+  align-items: center;
+  background: #f1f1f1;
+  padding: 8px 12px;
+  border-radius: 999px;
+  flex: 1;
+  max-width: 400px;
+}
+
+.search__icon {
+  color: #999;
+  margin-right: 8px;
+}
+
+.search__input {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+}
+
+.header__icons {
+  display: flex;
+  gap: 16px;
+  font-size: 18px;
+  .login {
+    display: flex;
+    gap: 10px;
+    cursor: pointer;
+    align-items: center;
+    .login-text {
+      display: flex;
+      flex-direction: column;
+      font-size: variables.$text-m;
+      align-items: start;
+    }
+  }
+}
+
+.avatar {
+  width: 32px; // lớn hơn để nhìn rõ hơn
+  height: 32px;
+  border-radius: 50%; // avatar tròn
+  background-color: white;
+  border: 1px solid gray;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; // cắt ảnh vừa khít khung
+}
