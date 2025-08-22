@@ -1,10 +1,11 @@
 import axios from "axios";
 import toast from "react-hot-toast";
+import axiosClient from "../utils/axiosClient";
 
 export const addCart = async (product: string, quantity: number) => {
   try {
-    const res = await axios.patch(
-      "http://127.0.0.1:3000/api/cart",
+    const res = await axiosClient.patch(
+      "/api/cart",
       {
         product,
         quantity,
@@ -28,7 +29,7 @@ export const addCart = async (product: string, quantity: number) => {
 
 export const getCart = async () => {
   try {
-    const res = await axios.get("http://127.0.0.1:3000/api/cart", {
+    const res = await axiosClient.get("/api/cart", {
       withCredentials: true,
     });
 
@@ -48,7 +49,7 @@ export const getCart = async () => {
 
 export const deleteCartItem = async (id: string) => {
   try {
-    const res = await axios.delete(`http://127.0.0.1:3000/api/cart/${id}`, {
+    const res = await axiosClient.delete(`/api/cart/${id}`, {
       withCredentials: true,
     });
 
@@ -66,8 +67,8 @@ export const deleteCartItem = async (id: string) => {
 
 export const updateQuantityItem = async (id: string, quantity: number) => {
   try {
-    await axios.patch(
-      `http://127.0.0.1:3000/api/cart/${id}`,
+    await axiosClient.patch(
+      `/api/cart/${id}`,
       {
         quantity,
       },

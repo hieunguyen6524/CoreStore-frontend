@@ -8,9 +8,14 @@ import toast from "react-hot-toast";
 interface CartItemsProps {
   item: Cart;
   handleDeleteItem: (id: string) => Promise<void>;
+  handleUpdateQuantity: (id: string, newQuantity: number) => void;
 }
 
-function CartItems({ item, handleDeleteItem }: CartItemsProps) {
+function CartItems({
+  item,
+  handleDeleteItem,
+  handleUpdateQuantity,
+}: CartItemsProps) {
   const [quantity, setQuantity] = useState(item.quantity);
 
   console.log(item);
@@ -28,6 +33,7 @@ function CartItems({ item, handleDeleteItem }: CartItemsProps) {
       if (prev < item.product.stock) {
         const newQuantity = prev + 1;
         debounceUpdate(newQuantity);
+        handleUpdateQuantity(item._id, newQuantity);
         return newQuantity;
       } else {
         toast(`Kho hiện chỉ còn ${item.product.stock} sản phẩm.`, {
@@ -42,6 +48,8 @@ function CartItems({ item, handleDeleteItem }: CartItemsProps) {
     setQuantity((prev) => {
       const newQuantity = Math.max(1, prev - 1);
       debounceUpdate(newQuantity);
+      handleUpdateQuantity(item._id, newQuantity);
+
       return newQuantity;
     });
   }
@@ -61,8 +69,7 @@ function CartItems({ item, handleDeleteItem }: CartItemsProps) {
   // Khi input mất focus → gọi API luôn
   async function handleBlur() {
     await updateQuantityItem(item._id, quantity);
-
-    // console.log("Updated via blur:", quantity);
+    handleUpdateQuantity(item._id, quantity);
   }
 
   return (
@@ -72,10 +79,12 @@ function CartItems({ item, handleDeleteItem }: CartItemsProps) {
           <img src={item.product.thumbnail} alt={item.product.name} />
           <div>
             <h3>{item.product.name}</h3>
-            {/* <p>Size: {item.size}</p>
-            <p>Color: {item.color}</p> */}
+
+            <span className="price price-old">
+              {item.product.price.toLocaleString("vi-VN")}₫
+            </span>
             <span className="price">
-              {item.product.priceAfterDiscount.toLocaleString("vi-VN")}
+              {item.product.priceAfterDiscount.toLocaleString("vi-VN")}₫
             </span>
           </div>
         </div>
@@ -83,7 +92,6 @@ function CartItems({ item, handleDeleteItem }: CartItemsProps) {
         <div className="item-actions">
           <div className="quantity">
             <button onClick={handleDecrease}>−</button>
-            {/* <span>{item.quantity}</span> */}
             <input
               type="number"
               min={1}

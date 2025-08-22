@@ -2,6 +2,7 @@ import axios from "axios";
 import { store } from "../../store";
 import { clearUser, setUser } from "../features/User/userSlice";
 import toast from "react-hot-toast";
+import axiosClient from "../utils/axiosClient";
 
 export const signup = async (
   name: string,
@@ -11,8 +12,8 @@ export const signup = async (
 ) => {
   try {
     // console.log(name, email, password, passwordConfirm);
-    const res = await axios.post(
-      "http://127.0.0.1:3000/api/users/signup",
+    const res = await axiosClient.post(
+      "/api/users/signup",
       {
         name,
         email,
@@ -38,8 +39,8 @@ export const signup = async (
 
 export const login = async (email: string, password: string) => {
   try {
-    const res = await axios.post(
-      "http://127.0.0.1:3000/api/users/login",
+    const res = await axiosClient.post(
+      "/api/users/login",
       {
         email,
         password,
@@ -63,7 +64,7 @@ export const login = async (email: string, password: string) => {
 
 export const fetchCurrentUser = async () => {
   try {
-    const res = await axios.get("http://127.0.0.1:3000/api/users/me", {
+    const res = await axiosClient.get("/api/users/me", {
       withCredentials: true,
     });
     store.dispatch(setUser(res.data.data.data));
@@ -74,7 +75,7 @@ export const fetchCurrentUser = async () => {
 
 export const logout = async () => {
   try {
-    const res = await axios.get("http://127.0.0.1:3000/api/users/logout", {
+    const res = await axiosClient.get("/api/users/logout", {
       withCredentials: true,
     });
 
@@ -94,12 +95,9 @@ export const logout = async () => {
 
 export const forgotPassword = async (email: string) => {
   try {
-    const res = await axios.post(
-      "http://127.0.0.1:3000/api/users/forgotpassword",
-      {
-        email,
-      }
-    );
+    const res = await axiosClient.post("/api/users/forgotpassword", {
+      email,
+    });
 
     if (res.data.status === "success") {
       toast.success("Vui lòng kiểm tra email");
@@ -122,9 +120,8 @@ export const resetPassword = async (
   passwordConfirm: string
 ) => {
   try {
-    console.log(token, password, passwordConfirm);
-    const res = await axios.patch(
-      `http://127.0.0.1:3000/api/users/resetpassword/${token}`,
+    const res = await axiosClient.patch(
+      `/api/users/resetpassword/${token}`,
       {
         password,
         passwordConfirm,

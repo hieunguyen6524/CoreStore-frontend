@@ -1,6 +1,7 @@
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
 import toast from "react-hot-toast";
+import axiosClient from "../utils/axiosClient";
 
 type ProfileData = FormData | { name: string; email: string };
 
@@ -18,8 +19,8 @@ export const updateSetting = async (
   try {
     const url =
       mode === "password"
-        ? "http://127.0.0.1:3000/api/users/updateMyPassword"
-        : "http://127.0.0.1:3000/api/users/updateMe";
+        ? "/api/users/updateMyPassword"
+        : "/api/users/updateMe";
 
     const config: AxiosRequestConfig = {
       withCredentials: true,
@@ -28,7 +29,7 @@ export const updateSetting = async (
         : { "Content-Type": "application/json" },
     };
 
-    const res = await axios.patch(url, data, config);
+    const res = await axiosClient.patch(url, data, config);
 
     if (res.data.status === "success") {
       toast.success(`${mode.toUpperCase()} cập nhật thành công`);

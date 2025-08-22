@@ -8,8 +8,6 @@ function SignupPage() {
     password: string,
     passwordConfirm: string
   ) {
-    console.log(name, email, password, passwordConfirm);
-
     await signup(name, email, password, passwordConfirm);
   }
 

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosClient from "../utils/axiosClient";
 
 // export const getAllProducts = async () => {
 //   const res = await axios.get("http://127.0.0.1:3000/api/products");
@@ -7,7 +7,7 @@ import axios from "axios";
 
 export const getHomeProducts = async () => {
   try {
-    const res = await axios.get("http://127.0.0.1:3000/view");
+    const res = await axiosClient.get("/view");
     return res.data.data;
   } catch (error) {
     console.error("Erro get home product:", error);
@@ -17,7 +17,7 @@ export const getHomeProducts = async () => {
 
 export const getDetailProduct = async (slug: string) => {
   try {
-    const res = await axios.get(`http://127.0.0.1:3000/view/${slug}`);
+    const res = await axiosClient.get(`/view/${slug}`);
 
     return res.data.data.product;
   } catch (error) {
