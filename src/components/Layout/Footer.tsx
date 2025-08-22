@@ -1,5 +1,3 @@
-import { Facebook, Youtube } from "lucide-react";
-
 interface FooterProps {
   title: string;
   contents: string[];
