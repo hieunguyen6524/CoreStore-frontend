@@ -83,10 +83,10 @@ function Footer() {
       </div>
 
       {/* Bản quyền */}
-      <div className="footer__bottom">
+      {/* <div className="footer__bottom">
         <span>© 2025 CoreStore. All rights reserved.</span>
         <img src="/footers/logo-bct.png" alt="Bộ Công Thương" />
-      </div>
+      </div> */}
     </footer>
   );
 }
