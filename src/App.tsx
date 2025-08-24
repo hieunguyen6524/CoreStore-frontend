@@ -11,15 +11,16 @@ import SignupPage from "./pages/SignupPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import CartPage from "./pages/CartPage";
-import { useUserStore } from "./store/user";
+import { useSelector } from "react-redux";
+import type { RootState } from "./store/store";
 
 function ProtectedRoutes() {
-  const { isLogin } = useUserStore();
+  const { isLogin } = useSelector((state: RootState) => state.auth);
   return isLogin ? <Outlet /> : <Navigate to="/login" replace={false} />;
 }
 
 function RejectedRoutes() {
-  const { isLogin } = useUserStore();
+  const { isLogin } = useSelector((state: RootState) => state.auth);
   return !isLogin ? <Outlet /> : <Navigate to="/" replace={false} />;
 }
 
@@ -35,16 +36,16 @@ function App() {
           <Route element={<RejectedRoutes />}>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
             <Route
               path="/resetPassword/:token"
               element={<ResetPasswordPage />}
             />
-            <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
           </Route>
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<HomePage />} />
+          <Route path="/product/:slug" element={<ProductDetailPage />} />
           <Route element={<ProtectedRoutes />}>
-            <Route path="/product/:slug" element={<ProductDetailPage />} />
             <Route path="/me" element={<ProfilePage />} />
             <Route path="/cart" element={<CartPage />} />
           </Route>

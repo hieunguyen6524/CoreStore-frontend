@@ -13,7 +13,7 @@ function SearchBox() {
       <Search className="search__icon" />
       <input
         type="text"
-        placeholder="Search for products..."
+        placeholder="Tìm kiếm sản phẩm..."
         className="search__input"
       />
     </div>
