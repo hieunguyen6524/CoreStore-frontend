@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import axiosClient from "../utils/axiosClient";
 
 // export const getAllProducts = async () => {
@@ -32,6 +33,17 @@ export const getProductByCategory = async (slug: string) => {
     return res.data.data.products;
   } catch (error) {
     console.error("Erro get product by slug:", error);
+    return null;
+  }
+};
+
+export const searchProduct = async (keyword: string | "") => {
+  try {
+    const res = await axiosClient.get(`/api/products?keyword=${keyword}`);
+    return res.data.data.data;
+  } catch (error) {
+    toast.error("Không thể tìm sản phẩm");
+    console.error("Erro get product by keyword:", error);
     return null;
   }
 };

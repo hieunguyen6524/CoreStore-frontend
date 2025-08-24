@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { addCart } from "../../services/cartService";
 import type { Product } from "../../types/product";
 
@@ -6,8 +7,14 @@ interface ProductDetailProps {
 }
 
 function ProductDetail({ product }: ProductDetailProps) {
+  const [mainImage, setMainImage] = useState(product.thumbnail);
+
   async function handleAddCart() {
     await addCart(product.id, 1);
+  }
+
+  function changeMainImg(url: string) {
+    setMainImage(url);
   }
 
   return (
@@ -15,11 +22,16 @@ function ProductDetail({ product }: ProductDetailProps) {
       <div className="product-detail__top">
         <div className="product-detail__images">
           <div className="product-detail__images-main">
-            <img src={product.thumbnail} alt={product.name} />
+            <img src={mainImage} alt={product.name} />
           </div>
           <div className="product-detail__images-thumbnails">
             {product.images.map((img) => (
-              <img key={img} src={img} alt="thumb" />
+              <img
+                key={img}
+                src={img}
+                alt="thumb"
+                onClick={() => changeMainImg(img)}
+              />
             ))}
           </div>
         </div>
@@ -43,13 +55,13 @@ function ProductDetail({ product }: ProductDetailProps) {
             </span>
           </div>
 
-          <div className="product-detail__info-promotion">
+          {/* <div className="product-detail__info-promotion">
             <h4>🎁 Quà tặng khuyến mãi</h4>
             <ul>
               <li>Tặng 1 x Lót chuột...</li>
               <li>Tặng 1 x Đế Tản Nhiệt...</li>
             </ul>
-          </div>
+          </div> */}
 
           <div className="product-detail__info-actions">
             <button className="product-detail__info-actions-buy-now">
