@@ -1,6 +1,6 @@
 import axios from "axios";
-import { store } from "../../store";
-import { clearUser, setUser } from "../features/User/userSlice";
+import { store } from "../store/store";
+import { clearUser, setUser } from "../store/authSlice";
 import toast from "react-hot-toast";
 import axiosClient from "../utils/axiosClient";
 

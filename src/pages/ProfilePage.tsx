@@ -1,13 +1,13 @@
 import { useSelector } from "react-redux";
 import Layout from "../components/Layout/Layout";
-import type { RootState } from "../../store";
+import type { RootState } from "../store/store";
 
 import { logout } from "../services/authService";
 import MenuProfile from "../components/User/MenuProfile";
 import ContentProfile from "../components/User/ContentProfile";
 
 function ProfilePage() {
-  const user = useSelector((state: RootState) => state.user.user);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   async function handleLogout() {
     await logout();

@@ -20,25 +20,25 @@ function MenuProfile({ user, handleLogout }: MenuProfileProps) {
       <ul className="side-nav">
         <li className="side-nav--active">
           <a href="#">
-            <Settings /> Settings
+            <Settings /> Cài đặt
           </a>
         </li>
         <li>
-          <a href="/my-tours">
+          <a href="#">
             <ShoppingBag />
-            Order
+            Đơn hàng
           </a>
         </li>
         <li>
           <a href="#">
             <Star />
-            My reviews
+            Đánh giá
           </a>
         </li>
         <li>
           <a href="#">
             <CreditCard />
-            Billing
+            Hóa đơn
           </a>
         </li>
       </ul>
@@ -52,25 +52,25 @@ function MenuProfile({ user, handleLogout }: MenuProfileProps) {
               <li>
                 <a href="#">
                   <Package />
-                  Manage products
+                  Quản lý sản phẩm
                 </a>
               </li>
               <li>
                 <a href="#">
                   <UserIcon />
-                  Manage users
+                  Quản lý người dùng
                 </a>
               </li>
               <li>
                 <a href="#">
                   <Star />
-                  Manage reviews
+                  Quản lý đánh giá
                 </a>
               </li>
               <li>
                 <a href="#">
                   <ShoppingBag />
-                  Manage order
+                  Quản lý đơn hàng
                 </a>
               </li>
             </ul>
@@ -82,7 +82,7 @@ function MenuProfile({ user, handleLogout }: MenuProfileProps) {
         <li>
           <a onClick={handleLogout}>
             <LogOutIcon />
-            Log out
+            Đăng xuất
           </a>
         </li>
       </ul>
