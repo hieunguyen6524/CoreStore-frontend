@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ProductDetailPage from "./pages/ProductDetailPage";
@@ -11,6 +11,17 @@ import SignupPage from "./pages/SignupPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import CartPage from "./pages/CartPage";
+import { useUserStore } from "./store/user";
+
+function ProtectedRoutes() {
+  const { isLogin } = useUserStore();
+  return isLogin ? <Outlet /> : <Navigate to="/login" replace={false} />;
+}
+
+function RejectedRoutes() {
+  const { isLogin } = useUserStore();
+  return !isLogin ? <Outlet /> : <Navigate to="/" replace={false} />;
+}
 
 function App() {
   useEffect(() => {
@@ -21,15 +32,22 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
+          <Route element={<RejectedRoutes />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route
+              path="/resetPassword/:token"
+              element={<ResetPasswordPage />}
+            />
+            <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
+          </Route>
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
-          <Route path="/resetPassword/:token" element={<ResetPasswordPage />} />
           <Route path="/home" element={<HomePage />} />
-          <Route path="/product/:slug" element={<ProductDetailPage />} />
-          <Route path="/me" element={<ProfilePage />} />
-          <Route path="/cart" element={<CartPage />} />
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/product/:slug" element={<ProductDetailPage />} />
+            <Route path="/me" element={<ProfilePage />} />
+            <Route path="/cart" element={<CartPage />} />
+          </Route>
         </Routes>
       </BrowserRouter>
       <Toaster

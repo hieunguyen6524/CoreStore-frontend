@@ -3,6 +3,9 @@ import { store } from "../../store";
 import { clearUser, setUser } from "../features/User/userSlice";
 import toast from "react-hot-toast";
 import axiosClient from "../utils/axiosClient";
+import type { SuccessResponse } from "../types/response";
+import type { User } from "../types/user";
+import { useUserStore } from "../store/user";
 
 export const signup = async (
   name: string,
@@ -39,7 +42,7 @@ export const signup = async (
 
 export const login = async (email: string, password: string) => {
   try {
-    const res = await axiosClient.post(
+    const res = await axiosClient.post<SuccessResponse<{ user: User }>>(
       "/api/users/login",
       {
         email,
@@ -48,10 +51,16 @@ export const login = async (email: string, password: string) => {
       { withCredentials: true }
     );
     if (res.data.status === "success") {
-      toast.success("Đăng nhập thành công");
-      setTimeout(() => {
-        location.assign("/");
-      }, 1500);
+      const user = res.data.data.user;
+
+      if (user) {
+        const { setUser } = useUserStore.getState();
+        setUser(user);
+        toast.success("Đăng nhập thành công");
+        setTimeout(() => {
+          location.assign("/");
+        }, 1500);
+      }
     }
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
@@ -75,12 +84,19 @@ export const fetchCurrentUser = async () => {
 
 export const logout = async () => {
   try {
-    const res = await axiosClient.get("/api/users/logout", {
-      withCredentials: true,
-    });
+    const res = await axiosClient.get<SuccessResponse<{ user: User }>>(
+      "/api/users/logout",
+      {
+        withCredentials: true,
+      }
+    );
 
     if (res.data.status === "success") {
       store.dispatch(clearUser());
+
+      const { setUser } = useUserStore.getState();
+      setUser(null);
+
       location.assign("/");
       toast.success("Đăng xuất thành công");
     }
