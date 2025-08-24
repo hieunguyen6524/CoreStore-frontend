@@ -13,6 +13,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import CartPage from "./pages/CartPage";
 import { useSelector } from "react-redux";
 import type { RootState } from "./store/store";
+import ProductsPage from "./pages/ProductsPage";
 
 function ProtectedRoutes() {
   const { isLogin } = useSelector((state: RootState) => state.auth);
@@ -45,6 +46,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/product/:slug" element={<ProductDetailPage />} />
+          <Route path="/category/:slug" element={<ProductsPage />} />
           <Route element={<ProtectedRoutes />}>
             <Route path="/me" element={<ProfilePage />} />
             <Route path="/cart" element={<CartPage />} />

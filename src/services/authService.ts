@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 import axiosClient from "../utils/axiosClient";
 import type { SuccessResponse } from "../types/response";
 import type { User } from "../types/user";
-import { useUserStore } from "../store/user";
 
 export const signup = async (
   name: string,
@@ -54,7 +53,6 @@ export const login = async (email: string, password: string) => {
       const user = res.data.data.user;
 
       if (user) {
-        const { setUser } = useUserStore.getState();
         setUser(user);
         toast.success("Đăng nhập thành công");
         setTimeout(() => {
@@ -93,8 +91,6 @@ export const logout = async () => {
 
     if (res.data.status === "success") {
       store.dispatch(clearUser());
-
-      const { setUser } = useUserStore.getState();
       setUser(null);
 
       location.assign("/");
