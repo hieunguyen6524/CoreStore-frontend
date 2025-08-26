@@ -21,12 +21,6 @@ function Header() {
         <img src="/logo.svg" alt="Logo" className="logo-img" />
       </div>
 
-      {/* <nav className="header__nav">
-        <a href="#">Shop</a>
-        <a href="#">On Sale</a>
-        <a href="#">New Arrivals</a>
-        <a href="#">Brands</a>
-      </nav> */}
       <SearchBox />
 
       <div className="header__icons">
@@ -46,7 +40,7 @@ function Header() {
           <div className="login" onClick={() => navigate("/login")}>
             <UserIcon />
             <div className="login-text">
-              <span>Đăng nhập</span>
+              <span>Đăng nhập/</span>
               <span>Đăng ký</span>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import type { Product } from "../../types/product";
+import Loading from "../../ui/Loading";
 
 import ProductCard from "./ProductCard";
 
@@ -11,13 +12,7 @@ export default function ProductSection({
   title,
   products,
 }: ProductSectionProps) {
-  if (products.length === 0) {
-    return (
-      <h1 style={{ textAlign: "center", padding: "10rem" }}>
-        Không tìm thấy sản phẩm
-      </h1>
-    );
-  }
+  if (products.length == 0) return <Loading />;
 
   return (
     <>

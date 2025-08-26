@@ -1,12 +1,16 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import type { User } from "../../types/user";
 import { updateSetting } from "../../services/userService";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/authSlice";
 
 interface ContextProfileProps {
   user: User;
 }
 
 function ContentProfile({ user }: ContextProfileProps) {
+  const dispatch = useDispatch();
+
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [currenthPassword, setCurrenthPassword] = useState("");
@@ -75,7 +79,9 @@ function ContentProfile({ user }: ContextProfileProps) {
       form.append("photo", photoFile);
     }
 
-    await updateSetting("profile", form, true);
+    const res = await updateSetting("profile", form, true);
+
+    if (res) dispatch(setUser(res));
   }
 
   async function handleSubmitUserPassword(e: FormEvent) {

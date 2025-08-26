@@ -135,10 +135,10 @@ function AuthForm({ mode, onSubmit }: AuthFormProps) {
           {loading
             ? "Loading..."
             : mode === "login"
-            ? "Log in"
+            ? "Đăng nhập"
             : mode === "signup"
-            ? "Sign up"
-            : "Submit"}
+            ? "Đăng ký"
+            : "Gửi"}
         </button>
 
         {mode === "login" && (
@@ -163,7 +163,7 @@ function AuthForm({ mode, onSubmit }: AuthFormProps) {
           className="login__btn login__btn--outline"
           onClick={handleNavigateSignup}
         >
-          Create an account
+          Tạo tài khoản
         </button>
       )}
 
@@ -173,7 +173,7 @@ function AuthForm({ mode, onSubmit }: AuthFormProps) {
           className="login__btn login__btn--outline"
           onClick={handleNavigateLogin}
         >
-          Log in
+          Đăng nhập
         </button>
       )}
     </form>

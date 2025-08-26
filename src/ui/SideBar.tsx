@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { Category } from "../types/category";
 import { getAllCategories } from "../services/categoryService";
 import { useNavigate } from "react-router-dom";
+import Loading from "./Loading";
 
 function SideBar() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -21,16 +22,18 @@ function SideBar() {
   return (
     <aside className="sidebar">
       <ul className="category-list">
-        {categories.length === 0
-          ? ""
-          : categories.map((category) => (
-              <li
-                key={category.slug}
-                onClick={() => handleNavigate(category.slug, category.name)}
-              >
-                {category.name}
-              </li>
-            ))}
+        {categories.length === 0 ? (
+          <Loading />
+        ) : (
+          categories.map((category) => (
+            <li
+              key={category.slug}
+              onClick={() => handleNavigate(category.slug, category.name)}
+            >
+              {category.name}
+            </li>
+          ))
+        )}
       </ul>
     </aside>
   );

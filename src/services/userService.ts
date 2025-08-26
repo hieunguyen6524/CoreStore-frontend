@@ -2,6 +2,7 @@ import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
 import toast from "react-hot-toast";
 import axiosClient from "../utils/axiosClient";
+import type { User } from "../types/user";
 
 type ProfileData = FormData | { name: string; email: string };
 
@@ -15,7 +16,7 @@ export const updateSetting = async (
   mode: "profile" | "password",
   data: ProfileData | PasswordData,
   isFormData = false
-): Promise<void> => {
+): Promise<User | undefined> => {
   try {
     const url =
       mode === "password"
@@ -34,6 +35,7 @@ export const updateSetting = async (
     if (res.data.status === "success") {
       toast.success(`${mode.toUpperCase()} cập nhật thành công`);
     }
+    return res.data.data.user;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       toast.error(error.response?.data?.message || "Cập nhật thất bại");

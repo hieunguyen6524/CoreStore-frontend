@@ -5,6 +5,8 @@ import { getHomeProducts } from "../services/productService";
 import type { Product } from "../types/product";
 import Layout from "../components/Layout/Layout";
 
+import Loading from "../ui/Loading";
+
 function HomePage() {
   const [homeProducts, setHomeProducts] = useState<{
     topDiscount: Product[];
@@ -28,13 +30,13 @@ function HomePage() {
     })();
   }, []);
 
-  // if (!homeProducts) return <div>Đang tải...</div>;
+  if (!homeProducts) return <Loading />;
 
   return (
     <Layout>
       <SideBarAndBanner />
       {!homeProducts ? (
-        <div>Đang tải...</div>
+        <Loading />
       ) : (
         <>
           <ProductSection
