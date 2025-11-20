@@ -2,9 +2,9 @@
 .cart-container {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 2rem;
-  padding: 2rem;
-  max-width: 1200px;
+  gap: 32px;
+  padding: 32px;
+  max-width: 1400px;
   margin: auto;
 
   .empty-cart {
@@ -41,11 +41,18 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #fff;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      background: variables.$color-bg;
+      padding: 20px;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      border: 1px solid variables.$color-border-light;
+      transition: all 0.25s ease;
+
+      &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px);
+      }
 
       .item-info {
         display: flex;
@@ -53,10 +60,11 @@
         align-items: center;
 
         img {
-          width: 70px;
-          height: 70px;
+          width: 80px;
+          height: 80px;
           object-fit: cover;
-          border-radius: 6px;
+          border-radius: 10px;
+          border: 1px solid variables.$color-border-light;
         }
 
         h3 {
@@ -96,15 +104,21 @@
           overflow: hidden;
 
           button {
-            padding: 0.4rem 0.9rem;
-            font-size: 1.2rem;
+            padding: 8px 12px;
+            font-size: variables.$text-m;
             border: none;
-            background: #f5f5f5;
+            background: variables.$color-bg-secondary;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s ease;
+            color: variables.$color-text;
 
             &:hover {
-              background: #e5e5e5;
+              background: variables.$color-primary;
+              color: white;
+            }
+
+            &:active {
+              transform: scale(0.95);
             }
           }
 
@@ -143,11 +157,14 @@
   }
 
   .order-summary {
-    background: #fff;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    background: variables.$color-bg;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid variables.$color-border-light;
     height: fit-content;
+    position: sticky;
+    top: 100px;
 
     h3 {
       font-size: 2rem;
@@ -202,23 +219,32 @@
     }
 
     .checkout-btn {
-      margin-top: 1.5rem;
+      margin-top: 20px;
       width: 100%;
-      padding: 0.8rem;
-      background: black;
+      padding: 16px;
+      background: linear-gradient(135deg, variables.$color-primary, variables.$color-primary-dark);
       color: white;
       border: none;
-      border-radius: 6px;
-      font-size: 1rem;
+      border-radius: 10px;
+      font-size: variables.$text-m;
+      font-weight: 600;
       cursor: pointer;
-      &:hover {
-        background: #333;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(variables.$color-primary, 0.3);
+
+      &:hover:not(&--disable) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(variables.$color-primary, 0.4);
       }
+
       &--disable {
         cursor: default;
-        background: gray;
+        background: variables.$color-border;
+        opacity: 0.6;
+        box-shadow: none;
+
         &:hover {
-          background: gray;
+          transform: none;
         }
       }
     }

@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import debounce from "lodash/debounce";
 import { updateQuantityItem } from "../../services/cartService";
 import toast from "react-hot-toast";
+import { getProductImageUrl } from "../../utils/imageUrl";
 
 interface CartItemsProps {
   item: Cart;
@@ -76,7 +77,7 @@ function CartItems({
     <div className="cart-items">
       <div className="cart-item" key={item._id}>
         <div className="item-info">
-          <img src={item.product.thumbnail} alt={item.product.name} />
+          <img src={getProductImageUrl(item.product.thumbnail)} alt={item.product.name} />
           <div>
             <h3>{item.product.name}</h3>
 

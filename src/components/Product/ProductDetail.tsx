@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { addCart } from "../../services/cartService";
 import type { Product } from "../../types/product";
+import { getProductImageUrl } from "../../utils/imageUrl";
 
 interface ProductDetailProps {
   product: Product;
 }
 
 function ProductDetail({ product }: ProductDetailProps) {
-  const [mainImage, setMainImage] = useState(product.thumbnail);
+  const [mainImage, setMainImage] = useState(getProductImageUrl(product.thumbnail));
 
   async function handleAddCart() {
     await addCart(product.id, 1);
@@ -28,9 +29,9 @@ function ProductDetail({ product }: ProductDetailProps) {
             {product.images.map((img) => (
               <img
                 key={img}
-                src={img}
+                src={getProductImageUrl(img)}
                 alt="thumb"
-                onClick={() => changeMainImg(img)}
+                onClick={() => changeMainImg(getProductImageUrl(img))}
               />
             ))}
           </div>

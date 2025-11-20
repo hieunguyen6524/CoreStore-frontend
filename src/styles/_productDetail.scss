@@ -1,7 +1,9 @@
 @use "variables";
 
 .product-detail {
-  padding: 20px;
+  padding: 32px;
+  max-width: 1400px;
+  margin: 0 auto;
 
   &__top {
     display: flex;
@@ -18,7 +20,13 @@
 
       img {
         max-width: 70%;
-        border-radius: 8px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: scale(1.02);
+        }
       }
     }
 
@@ -29,14 +37,17 @@
       margin-top: 10px;
 
       img {
-        width: 60px;
-        height: 60px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
+        width: 70px;
+        height: 70px;
+        border: 2px solid variables.$color-border;
+        border-radius: 8px;
         cursor: pointer;
+        transition: all 0.25s ease;
+        object-fit: cover;
 
         &:hover {
-          border-color: red;
+          border-color: variables.$color-primary;
+          transform: scale(1.05);
         }
       }
     }

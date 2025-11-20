@@ -13,10 +13,12 @@ import {
 } from "react-router-dom";
 import Layout from "../components/Layout/Layout";
 import SideBarAndBanner from "../components/Layout/SideBarAndBanner";
+import Loading from "../ui/Loading";
 
 function ProductsPage() {
   const { slug } = useParams();
   const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const title = location.state?.title;
@@ -26,19 +28,37 @@ function ProductsPage() {
 
   useEffect(() => {
     (async () => {
-      let res: Product[] = [];
-      if (search) {
-        res = await searchProduct(search);
-      } else {
-        if (slug) {
-          res = await getProductByCategory(slug as string);
+      setLoading(true);
+      try {
+        let res: Product[] = [];
+        if (search) {
+          res = (await searchProduct(search)) || [];
         } else {
-          navigate("/");
+          if (slug) {
+            res = (await getProductByCategory(slug as string)) || [];
+          } else {
+            navigate("/");
+            return;
+          }
         }
+        setProducts(res);
+      } catch (error) {
+        console.error("Error loading products:", error);
+        setProducts([]);
+      } finally {
+        setLoading(false);
       }
-      setProducts(res || []);
     })();
   }, [slug, search, navigate]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <SideBarAndBanner />
+        <Loading />
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

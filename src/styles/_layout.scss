@@ -1,11 +1,41 @@
 @use "variables";
 
-html {
-  font-size: 62.5%; // 62.5% của 16px = 10px
-}
-
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
+  padding: 0 24px;
+}
+
+.title {
+  font-size: variables.$text-xl;
+  font-weight: 700;
+  color: variables.$color-text;
+  margin: 40px 0 24px;
+  padding: 0 24px;
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 24px;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(
+      90deg,
+      variables.$color-primary,
+      variables.$color-primary-light
+    );
+    border-radius: 2px;
+  }
+}
+
+.products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: flex-start;
+  padding: 24px;
 }

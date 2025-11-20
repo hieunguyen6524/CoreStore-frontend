@@ -2,6 +2,7 @@ import { ShoppingCart, UserIcon } from "lucide-react";
 import SearchBox from "../../ui/SearchBox";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { getUserImageUrl } from "../../utils/imageUrl";
 
 import type { RootState } from "../../store/store";
 function Header() {
@@ -33,7 +34,7 @@ function Header() {
             />
 
             <div className="avatar" onClick={() => navigate("/me")}>
-              <img src={user.avatar} alt="Avatar" />
+              <img src={getUserImageUrl(user.avatar)} alt="Avatar" />
             </div>
           </>
         ) : (

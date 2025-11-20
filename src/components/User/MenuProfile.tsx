@@ -7,6 +7,7 @@ import {
   Star,
   UserIcon,
 } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 import type { User } from "../../types/user";
 
 interface MenuProfileProps {
@@ -15,19 +16,25 @@ interface MenuProfileProps {
 }
 
 function MenuProfile({ user, handleLogout }: MenuProfileProps) {
+  const location = useLocation();
+
+  const isActive = (path: string) => {
+    return location.pathname === path ? "side-nav--active" : "";
+  };
+
   return (
     <nav className="user-view__menu">
       <ul className="side-nav">
-        <li className="side-nav--active">
-          <a href="#">
+        <li className={isActive("/me")}>
+          <Link to="/me">
             <Settings /> Cài đặt
-          </a>
+          </Link>
         </li>
-        <li>
-          <a href="#">
+        <li className={isActive("/my-orders")}>
+          <Link to="/my-orders">
             <ShoppingBag />
             Đơn hàng
-          </a>
+          </Link>
         </li>
         <li>
           <a href="#">
@@ -50,28 +57,10 @@ function MenuProfile({ user, handleLogout }: MenuProfileProps) {
             <h5 className="admin-nav__heading">Admin</h5>
             <ul className="side-nav">
               <li>
-                <a href="#">
-                  <Package />
-                  Quản lý sản phẩm
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <UserIcon />
-                  Quản lý người dùng
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <Star />
-                  Quản lý đánh giá
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <ShoppingBag />
-                  Quản lý đơn hàng
-                </a>
+                <Link to="/admin">
+                  <Settings />
+                  Admin Dashboard
+                </Link>
               </li>
             </ul>
           </div>

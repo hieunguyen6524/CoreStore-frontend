@@ -1,49 +1,73 @@
 @use "variables";
-.title {
-  margin: 0;
-  font-size: variables.$text-title;
-}
-
-.products {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: flex-start;
-  padding: 2rem;
-}
 
 .product-card {
-  background: #f8f8f8;
-  border-radius: 12px;
-  padding: 16px;
-  width: 220px; /* rộng hơn chút để vừa chữ dài */
+  background: variables.$color-bg;
+  border-radius: 16px;
+  padding: 20px;
+  width: 240px;
   text-align: center;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   cursor: pointer;
-  // justify-content: space-between;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid variables.$color-border-light;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      variables.$color-primary,
+      variables.$color-primary-light
+    );
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    border-color: variables.$color-primary;
+
+    &::before {
+      transform: scaleX(1);
+    }
+
+    .product-img {
+      transform: scale(1.05);
+    }
+  }
 }
 
 .product-img {
   width: 100%;
-  height: 160px; /* Cố định chiều cao ảnh */
-  object-fit: contain; /* hoặc cover */
-  border-radius: 8px;
-  margin-bottom: 12px;
-  background: #fff; /* màu nền để ảnh nhỏ nhìn đẹp */
-  padding: 4px; /* thêm khoảng trắng xung quanh */
+  height: 200px;
+  object-fit: contain;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  background: variables.$color-bg-secondary;
+  padding: 12px;
+  transition: transform 0.3s ease;
 }
 
 .product-name {
   font-size: variables.$text-name-product;
-  font-weight: 500;
-  margin-bottom: 8px;
-  min-height: 48px; /* đảm bảo tên sản phẩm đều hàng */
+  font-weight: 600;
+  margin-bottom: 12px;
+  min-height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+  color: variables.$color-text;
+  line-height: 1.4;
 }
 
 .product-rating {
@@ -74,15 +98,17 @@
 }
 
 .price-final {
-  font-weight: bold;
+  font-weight: 700;
   font-size: variables.$text-finalPrice;
-  color: variables.$text-color-finalPrice;
+  color: variables.$color-error;
 }
 
 .price-discount {
-  background: #ffe6e6;
-  color: #ff4d4f;
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: variables.$color-error;
   font-size: variables.$text-discount;
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
 }

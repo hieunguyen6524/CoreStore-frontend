@@ -1,0 +1,100 @@
+@use "variables";
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: variables.$text-m;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &--primary {
+    background: linear-gradient(135deg, variables.$color-primary, variables.$color-primary-dark);
+    color: white;
+    box-shadow: 0 4px 12px rgba(variables.$color-primary, 0.3);
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(variables.$color-primary, 0.4);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  }
+
+  &--secondary {
+    background: variables.$color-bg-secondary;
+    color: variables.$color-text;
+    border: 1px solid variables.$color-border;
+
+    &:hover:not(:disabled) {
+      background: variables.$color-border-light;
+      border-color: variables.$color-primary;
+    }
+  }
+
+  &--success,
+  &--green {
+    background: linear-gradient(135deg, variables.$color-success, #059669);
+    color: white;
+    box-shadow: 0 4px 12px rgba(variables.$color-success, 0.3);
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(variables.$color-success, 0.4);
+    }
+  }
+
+  &--danger {
+    background: linear-gradient(135deg, variables.$color-error, #dc2626);
+    color: white;
+    box-shadow: 0 4px 12px rgba(variables.$color-error, 0.3);
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(variables.$color-error, 0.4);
+    }
+  }
+
+  &--small {
+    padding: 8px 16px;
+    font-size: variables.$text-s;
+  }
+
+  &--large {
+    padding: 16px 32px;
+    font-size: variables.$text-lg;
+  }
+
+  &--outline {
+    background: transparent;
+    border: 2px solid variables.$color-primary;
+    color: variables.$color-primary;
+
+    &:hover:not(:disabled) {
+      background: rgba(variables.$color-primary, 0.05);
+    }
+  }
+
+  &--icon {
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+}
+

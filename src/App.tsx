@@ -14,6 +14,15 @@ import CartPage from "./pages/CartPage";
 import { useSelector } from "react-redux";
 import type { RootState } from "./store/store";
 import ProductsPage from "./pages/ProductsPage";
+import MyOrdersPage from "./pages/MyOrdersPage";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import AdminProducts from "./pages/Admin/AdminProducts";
+import AdminProductForm from "./pages/Admin/AdminProductForm";
+import AdminUsers from "./pages/Admin/AdminUsers";
+import AdminOrders from "./pages/Admin/AdminOrders";
+import AdminCategories from "./pages/Admin/AdminCategories";
+import AdminBrands from "./pages/Admin/AdminBrands";
+import AdminRoutes from "./components/Admin/AdminRoutes";
 
 function ProtectedRoutes() {
   const { isLogin } = useSelector((state: RootState) => state.auth);
@@ -51,6 +60,17 @@ function App() {
           <Route element={<ProtectedRoutes />}>
             <Route path="/me" element={<ProfilePage />} />
             <Route path="/cart" element={<CartPage />} />
+            <Route path="/my-orders" element={<MyOrdersPage />} />
+          </Route>
+          <Route element={<AdminRoutes />}>
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/products" element={<AdminProducts />} />
+            <Route path="/admin/products/new" element={<AdminProductForm />} />
+            <Route path="/admin/products/:id/edit" element={<AdminProductForm />} />
+            <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin/orders" element={<AdminOrders />} />
+            <Route path="/admin/categories" element={<AdminCategories />} />
+            <Route path="/admin/brands" element={<AdminBrands />} />
           </Route>
         </Routes>
       </BrowserRouter>

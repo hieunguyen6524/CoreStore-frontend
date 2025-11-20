@@ -3,6 +3,7 @@ import type { User } from "../../types/user";
 import { updateSetting } from "../../services/userService";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/authSlice";
+import { getUserImageUrl } from "../../utils/imageUrl";
 
 interface ContextProfileProps {
   user: User;
@@ -17,7 +18,7 @@ function ContentProfile({ user }: ContextProfileProps) {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
-  const [preview, setPreview] = useState<string>(user.avatar);
+  const [preview, setPreview] = useState<string>(getUserImageUrl(user.avatar));
   const [photoFile, setPhotoFile] = useState<File | null>(null);
 
   const createPreview = (file: File): Promise<string> => {

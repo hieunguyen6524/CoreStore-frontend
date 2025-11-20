@@ -30,9 +30,9 @@ export const getDetailProduct = async (slug: string) => {
 export const getProductByCategory = async (slug: string) => {
   try {
     const res = await axiosClient.get(`/api/products/category/${slug}`);
-    return res.data.data.products;
+    return res.data.data.data; // Backend trả về data.data.data
   } catch (error) {
-    console.error("Erro get product by slug:", error);
+    console.error("Error get product by category:", error);
     return null;
   }
 };

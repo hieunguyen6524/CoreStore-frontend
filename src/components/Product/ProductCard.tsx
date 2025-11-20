@@ -1,5 +1,6 @@
 import type { Product } from "../../types/product";
 import { useNavigate } from "react-router-dom";
+import { getProductImageUrl } from "../../utils/imageUrl";
 
 interface ProductCardProps {
   product: Product;
@@ -13,7 +14,7 @@ function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div className="product-card" key={product.slug} onClick={handleClick}>
-      <img src={product.thumbnail} alt={product.name} className="product-img" />
+      <img src={getProductImageUrl(product.thumbnail)} alt={product.name} className="product-img" />
       <h3 className="product-name">{product.name}</h3>
       {/* <div className="product-rating">
               ⭐⭐⭐☆☆
