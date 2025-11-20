@@ -22,16 +22,28 @@
 
 .banner-large img {
   width: 100%;
-  border-radius: 8px;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.01);
+  }
 }
 
 .banner-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
 }
 
 .banner-item img {
   width: 100%;
-  border-radius: 8px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
 }

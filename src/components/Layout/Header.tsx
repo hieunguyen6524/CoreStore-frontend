@@ -3,11 +3,13 @@ import SearchBox from "../../ui/SearchBox";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getUserImageUrl } from "../../utils/imageUrl";
+import { useCartCount } from "../../hook/useCartCount";
 
 import type { RootState } from "../../store/store";
 function Header() {
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.auth);
+  const cartCount = useCartCount();
 
   // console.log(user);
 
@@ -27,11 +29,16 @@ function Header() {
       <div className="header__icons">
         {user ? (
           <>
-            <ShoppingCart
-              size={30}
-              onClick={() => navigate("/cart")}
-              style={{ cursor: "pointer" }}
-            />
+            <div className="cart-icon-wrapper">
+              <ShoppingCart
+                size={30}
+                onClick={() => navigate("/cart")}
+                style={{ cursor: "pointer" }}
+              />
+              {cartCount > 0 && (
+                <span className="cart-badge">{cartCount}</span>
+              )}
+            </div>
 
             <div className="avatar" onClick={() => navigate("/me")}>
               <img src={getUserImageUrl(user.avatar)} alt="Avatar" />

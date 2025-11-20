@@ -3,42 +3,23 @@
 .product-card {
   background: variables.$color-bg;
   border-radius: 16px;
-  padding: 20px;
-  width: 240px;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 16px;
+  width: 100%;
+  text-align: left;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid variables.$color-border-light;
+  border: 1px solid transparent;
   position: relative;
   overflow: hidden;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(
-      90deg,
-      variables.$color-primary,
-      variables.$color-primary-light
-    );
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-  }
+  height: 100%;
 
   &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-    border-color: variables.$color-primary;
-
-    &::before {
-      transform: scaleX(1);
-    }
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-color: rgba(variables.$color-primary, 0.2);
 
     .product-img {
       transform: scale(1.05);
@@ -48,67 +29,71 @@
 
 .product-img {
   width: 100%;
-  height: 200px;
+  height: 180px;
   object-fit: contain;
   border-radius: 12px;
   margin-bottom: 16px;
-  background: variables.$color-bg-secondary;
-  padding: 12px;
-  transition: transform 0.3s ease;
+  background: #f8fafc;
+  padding: 16px;
+  transition: transform 0.5s ease;
 }
 
 .product-name {
-  font-size: variables.$text-name-product;
+  font-size: 1.5rem;
   font-weight: 600;
-  margin-bottom: 12px;
-  min-height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  margin-bottom: 8px;
+  min-height: 44px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   color: variables.$color-text;
   line-height: 1.4;
+  text-align: left;
 }
 
 .product-rating {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 8px;
-  min-height: 24px; /* đảm bảo rating không đẩy lệch */
+  font-size: 1.3rem;
+  color: #fbbf24;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .product-price {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  text-align: center;
+  gap: 6px;
+  margin-top: auto;
 }
 
 .price-original {
   text-decoration: line-through;
-  color: #999;
-  font-size: variables.$text-price;
+  color: #9ca3af;
+  font-size: 1.3rem;
+  font-weight: 500;
 }
 
 .price-final-wrap {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 6px;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .price-final {
   font-weight: 700;
-  font-size: variables.$text-finalPrice;
+  font-size: 1.8rem;
   color: variables.$color-error;
 }
 
 .price-discount {
-  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-  color: variables.$color-error;
-  font-size: variables.$text-discount;
-  padding: 4px 8px;
-  border-radius: 6px;
+  background: #fee2e2;
+  color: #ef4444;
+  font-size: 1.2rem;
+  padding: 2px 8px;
+  border-radius: 999px;
   font-weight: 600;
-  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
 }

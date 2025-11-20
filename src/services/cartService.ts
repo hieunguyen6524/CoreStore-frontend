@@ -1,6 +1,8 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 import axiosClient from "../utils/axiosClient";
+import { store } from "../store/store";
+import { incrementCartCount, setCartCount } from "../store/cartSlice";
 
 export const addCart = async (product: string, quantity: number) => {
   try {
@@ -15,6 +17,7 @@ export const addCart = async (product: string, quantity: number) => {
 
     if (res.data.status === "success") {
       toast.success("Đã thêm vào giỏ hàng!");
+      store.dispatch(incrementCartCount(quantity));
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -55,6 +58,10 @@ export const deleteCartItem = async (id: string) => {
 
     if (res.data.status === "success") {
       toast.success("Đã xóa sản phẩm!");
+      // Fetch updated cart and recalculate count
+      const cart = await getCart();
+      const totalCount = cart.reduce((sum: number, item: any) => sum + item.quantity, 0);
+      store.dispatch(setCartCount(totalCount));
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -74,11 +81,16 @@ export const updateQuantityItem = async (id: string, quantity: number) => {
       },
       { withCredentials: true }
     );
+    
+    // Fetch updated cart and recalculate count
+    const cart = await getCart();
+    const totalCount = cart.reduce((sum: number, item: any) => sum + item.quantity, 0);
+    store.dispatch(setCartCount(totalCount));
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      toast.error(error.response?.data?.message || "Xóa thất bại");
+      toast.error(error.response?.data?.message || "Cập nhật thất bại");
     } else {
-      toast.error("Xóa thất bại");
+      toast.error("Cập nhật thất bại");
     }
   }
 };
