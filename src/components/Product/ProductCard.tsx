@@ -1,3 +1,4 @@
+import { memo, useCallback } from "react";
 import type { Product } from "../../types/product";
 import { useNavigate } from "react-router-dom";
 import { getProductImageUrl } from "../../utils/imageUrl";
@@ -8,9 +9,9 @@ interface ProductCardProps {
 
 function ProductCard({ product }: ProductCardProps) {
   const navigate = useNavigate();
-  function handleClick() {
+  const handleClick = useCallback(() => {
     navigate(`/product/${product.slug}`);
-  }
+  }, [navigate, product.slug]);
 
   return (
     <div className="product-card" key={product.slug} onClick={handleClick}>
@@ -43,4 +44,4 @@ function ProductCard({ product }: ProductCardProps) {
   );
 }
 
-export default ProductCard;
+export default memo(ProductCard);

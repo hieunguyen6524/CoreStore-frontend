@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import AdminLayout from "../../components/Admin/AdminLayout";
 import { adminGetAllOrders, adminCancelOrder } from "../../services/adminService";
 import type { Order } from "../../types/order";
@@ -10,24 +10,24 @@ function AdminOrders() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>("all");
 
-  useEffect(() => {
-    loadOrders();
-  }, [filter]);
-
-  const loadOrders = async () => {
+  const loadOrders = useCallback(async () => {
     setLoading(true);
     const status = filter === "all" ? undefined : filter;
     const data = await adminGetAllOrders({ status });
     setOrders(data);
     setLoading(false);
-  };
+  }, [filter]);
 
-  const handleCancel = async (orderId: string) => {
+  useEffect(() => {
+    loadOrders();
+  }, [loadOrders]);
+
+  const handleCancel = useCallback(async (orderId: string) => {
     const success = await adminCancelOrder(orderId);
     if (success) {
       loadOrders();
     }
-  };
+  }, [loadOrders]);
 
   if (loading) return <Loading />;
 

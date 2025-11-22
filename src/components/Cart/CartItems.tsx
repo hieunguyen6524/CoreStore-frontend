@@ -1,6 +1,6 @@
 import { Trash2 } from "lucide-react";
 import type { Cart } from "../../types/cart";
-import { useMemo, useState } from "react";
+import { useMemo, useState, memo, useCallback } from "react";
 import debounce from "lodash/debounce";
 import { updateQuantityItem } from "../../services/cartService";
 import toast from "react-hot-toast";
@@ -29,7 +29,7 @@ function CartItems({
     [item._id]
   );
 
-  function handleIncrease() {
+  const handleIncrease = useCallback(() => {
     setQuantity((prev) => {
       if (prev < item.product.stock) {
         const newQuantity = prev + 1;
@@ -43,9 +43,9 @@ function CartItems({
       }
       return prev;
     });
-  }
+  }, [item.product.stock, item._id, debounceUpdate, handleUpdateQuantity]);
 
-  function handleDecrease() {
+  const handleDecrease = useCallback(() => {
     setQuantity((prev) => {
       const newQuantity = Math.max(1, prev - 1);
       debounceUpdate(newQuantity);
@@ -53,9 +53,9 @@ function CartItems({
 
       return newQuantity;
     });
-  }
+  }, [item._id, debounceUpdate, handleUpdateQuantity]);
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
     if (!isNaN(value) && value >= 1) {
       if (value >= item.product.stock) {
@@ -65,13 +65,17 @@ function CartItems({
         });
       } else setQuantity(value);
     }
-  }
+  }, [item.product.stock]);
 
   // Khi input mất focus → gọi API luôn
-  async function handleBlur() {
+  const handleBlur = useCallback(async () => {
     await updateQuantityItem(item._id, quantity);
     handleUpdateQuantity(item._id, quantity);
-  }
+  }, [item._id, quantity, handleUpdateQuantity]);
+
+  const handleDelete = useCallback(() => {
+    handleDeleteItem(item._id);
+  }, [item._id, handleDeleteItem]);
 
   return (
     <div className="cart-items">
@@ -105,7 +109,7 @@ function CartItems({
           </div>
           <button
             className="delete-btn"
-            onClick={() => handleDeleteItem(item._id)}
+            onClick={handleDelete}
           >
             <Trash2 />
           </button>
@@ -115,4 +119,4 @@ function CartItems({
   );
 }
 
-export default CartItems;
+export default memo(CartItems);

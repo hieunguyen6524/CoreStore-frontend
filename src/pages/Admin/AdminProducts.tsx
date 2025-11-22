@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import AdminLayout from "../../components/Admin/AdminLayout";
 import {
   adminGetAllProducts,
@@ -14,31 +14,55 @@ function AdminProducts() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [keyword, setKeyword] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
   const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    loadProducts();
-  }, [page, keyword]);
-
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     setLoading(true);
     const data = await adminGetAllProducts({
       page,
       limit: 20,
-      keyword: keyword || undefined,
+      keyword: searchKeyword || undefined,
     });
     setProducts(data);
     setLoading(false);
-  };
+  }, [page, searchKeyword]);
 
-  const handleDelete = async (id: string) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
-      const success = await adminDeleteProduct(id);
-      if (success) {
-        loadProducts();
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
+
+  const handleSearch = useCallback(
+    (e?: React.FormEvent) => {
+      e?.preventDefault();
+      setSearchKeyword(keyword);
+      setPage(1); // Reset về trang 1 khi tìm kiếm
+    },
+    [keyword]
+  );
+
+  const handleKeyPress = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        setSearchKeyword(keyword);
+        setPage(1);
       }
-    }
-  };
+    },
+    [keyword]
+  );
+
+  const handleDelete = useCallback(
+    async (id: string) => {
+      if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
+        const success = await adminDeleteProduct(id);
+        if (success) {
+          loadProducts();
+        }
+      }
+    },
+    [loadProducts]
+  );
 
   if (loading) return <Loading />;
 
@@ -53,17 +77,24 @@ function AdminProducts() {
           </Link>
         </div>
 
-        <div className="admin-search">
+        <form className="admin-search" onSubmit={handleSearch}>
           <div className="search-box">
-            <Search size={20} />
+            <button
+              type="submit"
+              className="search-icon-btn"
+              style={{ border: "0px" }}
+            >
+              <Search size={20} />
+            </button>
             <input
               type="text"
               placeholder="Tìm kiếm sản phẩm..."
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
+              onKeyPress={handleKeyPress}
             />
           </div>
-        </div>
+        </form>
 
         <div className="admin-table-container">
           <table className="admin-table">

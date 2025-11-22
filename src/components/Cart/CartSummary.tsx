@@ -1,3 +1,4 @@
+import { memo, useMemo, useCallback } from "react";
 import { checkout } from "../../services/orderService";
 import type { Cart } from "../../types/cart";
 
@@ -14,20 +15,23 @@ function CartSummary({
   setQR,
   setOrderId,
 }: CartSummaryProps) {
-  const total = cart.reduce(
-    (sum, item) => sum + item.product.priceAfterDiscount * item.quantity,
-    0
+  const total = useMemo(() => 
+    cart.reduce(
+      (sum, item) => sum + item.product.priceAfterDiscount * item.quantity,
+      0
+    ),
+    [cart]
   );
   // const discount = subtotal * 0.2;
   // const deliveryFee = 15;
   // const total = subtotal - discount + deliveryFee;
 
-  async function handleCheckout() {
+  const handleCheckout = useCallback(async () => {
     const res = await checkout();
     setQR(res.data.qrUrl);
     setOrderId(res.data.order._id);
     setIsModal(true);
-  }
+  }, [setQR, setOrderId, setIsModal]);
   return (
     <div className="order-summary">
       <h3>Ước tính</h3>
@@ -67,4 +71,4 @@ function CartSummary({
   );
 }
 
-export default CartSummary;
+export default memo(CartSummary);

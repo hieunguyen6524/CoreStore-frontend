@@ -4,8 +4,10 @@ import { getOrdersByUser } from "../services/orderService";
 import type { Order } from "../types/order";
 import OrderCard from "../components/Order/OrderCard";
 import Loading from "../ui/Loading";
+import { useNavigate } from "react-router-dom";
 
 function MyOrdersPage() {
+  const navigate = useNavigate();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>("all");
@@ -61,7 +63,7 @@ function MyOrdersPage() {
               <p>Bạn chưa có đơn hàng nào trong danh mục này</p>
               <button
                 className="btn btn--primary"
-                onClick={() => (window.location.href = "/home")}
+                onClick={() => navigate("/home")}
               >
                 Mua sắm ngay
               </button>

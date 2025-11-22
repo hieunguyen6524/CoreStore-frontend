@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import AdminLayout from "../../components/Admin/AdminLayout";
 import {
   adminGetAllUsers,
@@ -19,33 +19,33 @@ function AdminUsers() {
   const [loading, setLoading] = useState(true);
   const [editingUser, setEditingUser] = useState<UserWithId | null>(null);
 
-  useEffect(() => {
-    loadUsers();
-  }, []);
-
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     setLoading(true);
     const data = await adminGetAllUsers({ page: 1, limit: 50 });
     setUsers(data);
     setLoading(false);
-  };
+  }, []);
 
-  const handleDelete = async (id: string) => {
+  useEffect(() => {
+    loadUsers();
+  }, [loadUsers]);
+
+  const handleDelete = useCallback(async (id: string) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa người dùng này?")) {
       const success = await adminDeleteUser(id);
       if (success) {
         loadUsers();
       }
     }
-  };
+  }, [loadUsers]);
 
-  const handleUpdateRole = async (user: UserWithId, newRole: string) => {
+  const handleUpdateRole = useCallback(async (user: UserWithId, newRole: string) => {
     const success = await adminUpdateUser(user._id, { role: newRole });
     if (success) {
       loadUsers();
       setEditingUser(null);
     }
-  };
+  }, [loadUsers]);
 
   if (loading) return <Loading />;
 

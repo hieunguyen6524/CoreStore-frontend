@@ -7,6 +7,7 @@ import {
   Star,
   UserIcon,
 } from "lucide-react";
+import { memo, useCallback, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import type { User } from "../../types/user";
 
@@ -18,9 +19,11 @@ interface MenuProfileProps {
 function MenuProfile({ user, handleLogout }: MenuProfileProps) {
   const location = useLocation();
 
-  const isActive = (path: string) => {
+  const isActive = useCallback((path: string) => {
     return location.pathname === path ? "side-nav--active" : "";
-  };
+  }, [location.pathname]);
+
+  const isAdmin = useMemo(() => user.role === "admin", [user.role]);
 
   return (
     <nav className="user-view__menu">
@@ -36,22 +39,10 @@ function MenuProfile({ user, handleLogout }: MenuProfileProps) {
             Đơn hàng
           </Link>
         </li>
-        <li>
-          <a href="#">
-            <Star />
-            Đánh giá
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <CreditCard />
-            Hóa đơn
-          </a>
-        </li>
       </ul>
 
       {/* Chỉ hiển thị nếu role = admin  */}
-      {user.role === "admin" ? (
+      {isAdmin ? (
         <>
           <div className="admin-nav">
             <h5 className="admin-nav__heading">Admin</h5>
@@ -79,4 +70,4 @@ function MenuProfile({ user, handleLogout }: MenuProfileProps) {
   );
 }
 
-export default MenuProfile;
+export default memo(MenuProfile);

@@ -1,4 +1,5 @@
-import { useSelector } from "react-redux";
+import { useSelector, shallowEqual } from "react-redux";
+import { useCallback, useMemo } from "react";
 import Layout from "../components/Layout/Layout";
 import type { RootState } from "../store/store";
 
@@ -7,16 +8,16 @@ import MenuProfile from "../components/User/MenuProfile";
 import ContentProfile from "../components/User/ContentProfile";
 
 function ProfilePage() {
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth, shallowEqual);
 
-  async function handleLogout() {
+  const handleLogout = useCallback(async () => {
     await logout();
-  }
+  }, []);
 
-  if (!user) return <div>Not found user</div>;
+  const profileContent = useMemo(() => {
+    if (!user) return <div>Not found user</div>;
 
-  return (
-    <Layout>
+    return (
       <main className="main">
         <div className="user-view">
           {/* Menu  */}
@@ -26,6 +27,12 @@ function ProfilePage() {
           <ContentProfile user={user} />
         </div>
       </main>
+    );
+  }, [user, handleLogout]);
+
+  return (
+    <Layout>
+      {profileContent}
     </Layout>
   );
 }

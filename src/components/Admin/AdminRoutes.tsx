@@ -1,4 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { memo } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../store/store";
 
@@ -16,5 +17,5 @@ function AdminRoutes() {
   return <Outlet />;
 }
 
-export default AdminRoutes;
+export default memo(AdminRoutes);
 

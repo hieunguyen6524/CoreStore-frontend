@@ -40,9 +40,6 @@ function ProductDetail({ product }: ProductDetailProps) {
         <div className="product-detail__info">
           <h1 className="product-detail__info-title">{product.name}</h1>
 
-          <div className="product-detail__info-rating">
-            <a href="#">Xem đánh giá</a>
-          </div>
 
           <div className="product-detail__info-price">
             <span className="product-detail__info-price-current">

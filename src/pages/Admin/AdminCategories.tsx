@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import AdminLayout from "../../components/Admin/AdminLayout";
 import {
   adminGetAllCategories,
@@ -22,18 +22,18 @@ function AdminCategories() {
   const [newCategoryName, setNewCategoryName] = useState("");
   const [editCategoryName, setEditCategoryName] = useState("");
 
-  useEffect(() => {
-    loadCategories();
-  }, []);
-
-  const loadCategories = async () => {
+  const loadCategories = useCallback(async () => {
     setLoading(true);
     const data = await adminGetAllCategories();
     setCategories(data);
     setLoading(false);
-  };
+  }, []);
 
-  const handleCreate = async () => {
+  useEffect(() => {
+    loadCategories();
+  }, [loadCategories]);
+
+  const handleCreate = useCallback(async () => {
     if (!newCategoryName.trim()) return;
     const success = await adminCreateCategory({ name: newCategoryName });
     if (success) {
@@ -41,9 +41,9 @@ function AdminCategories() {
       setIsAdding(false);
       loadCategories();
     }
-  };
+  }, [newCategoryName, loadCategories]);
 
-  const handleUpdate = async (id: string) => {
+  const handleUpdate = useCallback(async (id: string) => {
     if (!editCategoryName.trim()) return;
     const success = await adminUpdateCategory(id, { name: editCategoryName });
     if (success) {
@@ -51,16 +51,16 @@ function AdminCategories() {
       setEditCategoryName("");
       loadCategories();
     }
-  };
+  }, [editCategoryName, loadCategories]);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = useCallback(async (id: string) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa danh mục này?")) {
       const success = await adminDeleteCategory(id);
       if (success) {
         loadCategories();
       }
     }
-  };
+  }, [loadCategories]);
 
   if (loading) return <Loading />;
 

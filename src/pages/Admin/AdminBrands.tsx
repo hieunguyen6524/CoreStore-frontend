@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import AdminLayout from "../../components/Admin/AdminLayout";
 import {
   adminGetAllBrands,
@@ -22,18 +22,18 @@ function AdminBrands() {
   const [newBrandName, setNewBrandName] = useState("");
   const [editBrandName, setEditBrandName] = useState("");
 
-  useEffect(() => {
-    loadBrands();
-  }, []);
-
-  const loadBrands = async () => {
+  const loadBrands = useCallback(async () => {
     setLoading(true);
     const data = await adminGetAllBrands();
     setBrands(data);
     setLoading(false);
-  };
+  }, []);
 
-  const handleCreate = async () => {
+  useEffect(() => {
+    loadBrands();
+  }, [loadBrands]);
+
+  const handleCreate = useCallback(async () => {
     if (!newBrandName.trim()) return;
     const success = await adminCreateBrand({ name: newBrandName });
     if (success) {
@@ -41,9 +41,9 @@ function AdminBrands() {
       setIsAdding(false);
       loadBrands();
     }
-  };
+  }, [newBrandName, loadBrands]);
 
-  const handleUpdate = async (id: string) => {
+  const handleUpdate = useCallback(async (id: string) => {
     if (!editBrandName.trim()) return;
     const success = await adminUpdateBrand(id, { name: editBrandName });
     if (success) {
@@ -51,16 +51,16 @@ function AdminBrands() {
       setEditBrandName("");
       loadBrands();
     }
-  };
+  }, [editBrandName, loadBrands]);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = useCallback(async (id: string) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa thương hiệu này?")) {
       const success = await adminDeleteBrand(id);
       if (success) {
         loadBrands();
       }
     }
-  };
+  }, [loadBrands]);
 
   if (loading) return <Loading />;
 

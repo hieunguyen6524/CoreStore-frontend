@@ -1,3 +1,4 @@
+import { memo } from "react";
 import ListBanner from "../../ui/ListBanner";
 import SideBar from "../../ui/SideBar";
 
@@ -10,4 +11,4 @@ function SideBarAndBanner() {
   );
 }
 
-export default SideBarAndBanner;
+export default memo(SideBarAndBanner);

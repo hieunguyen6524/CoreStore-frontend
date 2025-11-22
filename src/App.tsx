@@ -11,7 +11,8 @@ import SignupPage from "./pages/SignupPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import CartPage from "./pages/CartPage";
-import { useSelector } from "react-redux";
+import { useSelector, shallowEqual } from "react-redux";
+import { memo } from "react";
 import type { RootState } from "./store/store";
 import ProductsPage from "./pages/ProductsPage";
 import MyOrdersPage from "./pages/MyOrdersPage";
@@ -25,14 +26,24 @@ import AdminBrands from "./pages/Admin/AdminBrands";
 import AdminRoutes from "./components/Admin/AdminRoutes";
 
 function ProtectedRoutes() {
-  const { isLogin } = useSelector((state: RootState) => state.auth);
+  const isLogin = useSelector(
+    (state: RootState) => state.auth.isLogin,
+    shallowEqual
+  );
   return isLogin ? <Outlet /> : <Navigate to="/login" replace={false} />;
 }
 
+const MemoizedProtectedRoutes = memo(ProtectedRoutes);
+
 function RejectedRoutes() {
-  const { isLogin } = useSelector((state: RootState) => state.auth);
+  const isLogin = useSelector(
+    (state: RootState) => state.auth.isLogin,
+    shallowEqual
+  );
   return !isLogin ? <Outlet /> : <Navigate to="/" replace={false} />;
 }
+
+const MemoizedRejectedRoutes = memo(RejectedRoutes);
 
 function App() {
   useEffect(() => {
@@ -43,7 +54,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route element={<RejectedRoutes />}>
+          <Route element={<MemoizedRejectedRoutes />}>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
@@ -57,7 +68,7 @@ function App() {
           <Route path="/product/:slug" element={<ProductDetailPage />} />
           <Route path="/category/:slug" element={<ProductsPage />} />
           <Route path="/products" element={<ProductsPage />} />
-          <Route element={<ProtectedRoutes />}>
+          <Route element={<MemoizedProtectedRoutes />}>
             <Route path="/me" element={<ProfilePage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/my-orders" element={<MyOrdersPage />} />
@@ -66,7 +77,10 @@ function App() {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/products" element={<AdminProducts />} />
             <Route path="/admin/products/new" element={<AdminProductForm />} />
-            <Route path="/admin/products/:id/edit" element={<AdminProductForm />} />
+            <Route
+              path="/admin/products/:id/edit"
+              element={<AdminProductForm />}
+            />
             <Route path="/admin/users" element={<AdminUsers />} />
             <Route path="/admin/orders" element={<AdminOrders />} />
             <Route path="/admin/categories" element={<AdminCategories />} />

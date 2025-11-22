@@ -143,11 +143,7 @@ function AuthForm({ mode, onSubmit }: AuthFormProps) {
 
         {mode === "login" && (
           <div className="login__links">
-            <a href="#" className="login__link">
-              Vấn đề với đăng nhập
-            </a>
             <a
-              // href="#"
               className="login__link"
               onClick={handleNavigateForgotPassword}
             >

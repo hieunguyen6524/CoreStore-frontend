@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, memo, useCallback, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -9,7 +9,7 @@ import {
   Tag,
   LogOut,
 } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import type { RootState } from "../../store/store";
 import { logout } from "../../services/authService";
 
@@ -20,24 +20,28 @@ interface AdminLayoutProps {
 function AdminLayout({ children }: AdminLayoutProps) {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth, shallowEqual);
+  
+  // Memoize children để tránh re-render không cần thiết
+  const memoizedChildren = useMemo(() => children, [children]);
 
-  const isActive = (path: string) => {
+  const isActive = useCallback((path: string) => {
     return location.pathname === path ? "admin-nav__item--active" : "";
-  };
+  }, [location.pathname]);
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     await logout();
-  };
+  }, []);
 
-  const menuItems = [
+  const menuItems = useMemo(() => [
     { path: "/admin", icon: LayoutDashboard, label: "Dashboard" },
     { path: "/admin/products", icon: Package, label: "Sản phẩm" },
     { path: "/admin/users", icon: Users, label: "Người dùng" },
     { path: "/admin/orders", icon: ShoppingBag, label: "Đơn hàng" },
     { path: "/admin/categories", icon: FolderTree, label: "Danh mục" },
     { path: "/admin/brands", icon: Tag, label: "Thương hiệu" },
-  ];
+  ], []);
+
 
   return (
     <div className="admin-layout">
@@ -80,11 +84,16 @@ function AdminLayout({ children }: AdminLayoutProps) {
       </aside>
 
       <main className="admin-main">
-        <div className="admin-content">{children}</div>
+        <div className="admin-content">{memoizedChildren}</div>
       </main>
     </div>
   );
 }
 
-export default AdminLayout;
+// Custom comparison function để so sánh children
+const areEqual = (prevProps: AdminLayoutProps, nextProps: AdminLayoutProps) => {
+  return prevProps.children === nextProps.children;
+};
+
+export default memo(AdminLayout, areEqual);
 

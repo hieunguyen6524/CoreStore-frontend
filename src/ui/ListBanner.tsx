@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 function ListBanner() {
   return (
     <main className="main-content">
@@ -19,4 +21,4 @@ function ListBanner() {
   );
 }
 
-export default ListBanner;
+export default memo(ListBanner);

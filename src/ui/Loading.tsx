@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 function Loading() {
   return (
     <div
@@ -13,4 +15,4 @@ function Loading() {
   );
 }
 
-export default Loading;
+export default memo(Loading);

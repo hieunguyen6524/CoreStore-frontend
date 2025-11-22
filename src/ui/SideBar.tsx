@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo, useCallback, useMemo } from "react";
 import type { Category } from "../types/category";
 import { getAllCategories } from "../services/categoryService";
 import { useNavigate } from "react-router-dom";
@@ -15,9 +15,21 @@ function SideBar() {
     })();
   }, []);
 
-  function handleNavigate(slug: string, name: string) {
+  const handleNavigate = useCallback((slug: string, name: string) => {
     navigate(`/category/${slug}`, { state: { title: name } });
-  }
+  }, [navigate]);
+
+  const categoryList = useMemo(() => 
+    categories.map((category) => (
+      <li
+        key={category.slug}
+        onClick={() => handleNavigate(category.slug, category.name)}
+      >
+        {category.name}
+      </li>
+    )),
+    [categories, handleNavigate]
+  );
 
   return (
     <aside className="sidebar">
@@ -25,18 +37,11 @@ function SideBar() {
         {categories.length === 0 ? (
           <Loading />
         ) : (
-          categories.map((category) => (
-            <li
-              key={category.slug}
-              onClick={() => handleNavigate(category.slug, category.name)}
-            >
-              {category.name}
-            </li>
-          ))
+          categoryList
         )}
       </ul>
     </aside>
   );
 }
 
-export default SideBar;
+export default memo(SideBar);

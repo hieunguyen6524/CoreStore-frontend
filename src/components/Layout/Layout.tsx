@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { memo, useMemo } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 
@@ -7,13 +8,22 @@ interface Layout {
 }
 
 function Layout({ children }: Layout) {
+  // Memoize children để tránh re-render không cần thiết
+  const memoizedChildren = useMemo(() => children, [children]);
+
   return (
     <div className="container">
       <Header />
-      <main>{children}</main>
+      <main>{memoizedChildren}</main>
       <Footer />
     </div>
   );
 }
 
-export default Layout;
+// Custom comparison function để so sánh children
+const areEqual = (prevProps: Layout, nextProps: Layout) => {
+  // Nếu children là cùng một reference, không re-render
+  return prevProps.children === nextProps.children;
+};
+
+export default memo(Layout, areEqual);
