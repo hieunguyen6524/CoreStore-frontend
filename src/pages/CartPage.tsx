@@ -52,6 +52,47 @@ function CartPage() {
     [cart, handleDeleteItem, handleUpdateQuantity]
   );
 
+  const cartContent = useMemo(() => (
+    <>
+      <h1>Giỏ hàng</h1>
+      <div className="cart-container">
+        {cart.length === 0 ? (
+          <div className="empty-cart">
+            <img
+              src="Empty-Cart.png"
+              alt="Empty Cart"
+              className="empty-cart-img"
+            />
+            <h2>
+              Giỏ hàng <span className="text-red-500">Rỗng!</span>
+            </h2>
+            <p>Phải thêm ít nhất 1 sản phẩm để có thể thanh toán</p>
+            <button
+              className="return-btn"
+              onClick={handleNavigateHome}
+            >
+              VỀ TRANG CHỦ
+            </button>
+          </div>
+        ) : (
+          <>
+            <div>
+              {cartItems}
+            </div>
+          </>
+        )}
+        <CartSummary
+          cart={cart}
+          setIsModal={setIsModal}
+          setQR={setQR}
+          setOrderId={setOrderId}
+        />
+      </div>
+
+      {isModal && <ModalQR qr={qr} setIsModal={setIsModal} orderId={orderId} />}
+    </>
+  ), [cart, cartItems, isModal, qr, orderId, handleNavigateHome, setIsModal]);
+
   return (
     <Layout>
       {cartContent}

@@ -1,4 +1,4 @@
-import { useState, memo, useCallback, useMemo, useEffect, type ChangeEvent, type FormEvent } from "react";
+import { useState, memo, useCallback, useMemo, type ChangeEvent, type FormEvent } from "react";
 import type { User } from "../../types/user";
 import { updateSetting } from "../../services/userService";
 import { useDispatch } from "react-redux";
@@ -20,18 +20,6 @@ function ContentProfile({ user }: ContextProfileProps) {
 
   const [preview, setPreview] = useState<string>(getUserImageUrl(user.avatar));
   const [photoFile, setPhotoFile] = useState<File | null>(null);
-  const [isLoadingProfile, setIsLoadingProfile] = useState(false);
-  const [isLoadingPassword, setIsLoadingPassword] = useState(false);
-  
-  // Sync local state with user prop only when user changes externally (not from our update)
-  useEffect(() => {
-    setName(user.name);
-    setEmail(user.email);
-    // Only update preview if no photo file is selected
-    if (!photoFile) {
-      setPreview(getUserImageUrl(user.avatar));
-    }
-  }, [user.name, user.email, user.avatar, photoFile]);
 
   const createPreview = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -83,45 +71,27 @@ function ContentProfile({ user }: ContextProfileProps) {
 
   const handleSubmitUserData = useCallback(async (e: FormEvent) => {
     e.preventDefault();
-    setIsLoadingProfile(true);
 
-    try {
-      const form = new FormData();
-      form.append("name", name);
-      form.append("email", email);
+    const form = new FormData();
+    form.append("name", name);
+    form.append("email", email);
 
-      if (photoFile) {
-        form.append("photo", photoFile);
-      }
-
-      const res = await updateSetting("profile", form, true);
-
-      if (res) {
-        dispatch(setUser(res));
-        setPhotoFile(null); // Reset photo file after successful update
-      }
-    } finally {
-      setIsLoadingProfile(false);
+    if (photoFile) {
+      form.append("photo", photoFile);
     }
+
+    const res = await updateSetting("profile", form, true);
+
+    if (res) dispatch(setUser(res));
   }, [name, email, photoFile, dispatch]);
 
   const handleSubmitUserPassword = useCallback(async (e: FormEvent) => {
     e.preventDefault();
-    setIsLoadingPassword(true);
-
-    try {
-      await updateSetting("password", {
-        currenthPassword,
-        password,
-        passwordConfirm,
-      });
-      // Reset form after successful update
-      setCurrenthPassword("");
-      setPassword("");
-      setPasswordConfirm("");
-    } finally {
-      setIsLoadingPassword(false);
-    }
+    await updateSetting("password", {
+      currenthPassword,
+      password,
+      passwordConfirm,
+    });
   }, [currenthPassword, password, passwordConfirm]);
 
   return (
@@ -173,12 +143,7 @@ function ContentProfile({ user }: ContextProfileProps) {
           </div>
 
           <div className="form__group right">
-            <button 
-              className="btn btn--small btn--green" 
-              disabled={isLoadingProfile}
-            >
-              {isLoadingProfile ? "Đang lưu..." : "Lưu thay đổi"}
-            </button>
+            <button className="btn btn--small btn--green">Lưu thay đổi</button>
           </div>
         </form>
       </div>
@@ -241,9 +206,8 @@ function ContentProfile({ user }: ContextProfileProps) {
             <button
               className="btn btn--small btn--green btn--save-password"
               type="submit"
-              disabled={isLoadingPassword}
             >
-              {isLoadingPassword ? "Đang xử lý..." : "Thay đổi mật khẩu"}
+              Thay đổi mật khẩu
             </button>
           </div>
         </form>
