@@ -47,3 +47,30 @@ export const getOrdersByUser = async (status?: string) => {
     return [];
   }
 };
+
+export const cancelMyOrder = async (orderId: string) => {
+  try {
+    const res = await axiosClient.patch(
+      `/api/order/my-orders/${orderId}/cancel`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (res.data.status === "success") {
+      toast.success("Hủy đơn hàng thành công");
+      return res.data.data.order;
+    }
+    return null;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      toast.error(
+        error.response?.data?.message || "Lỗi khi hủy đơn hàng"
+      );
+    } else {
+      toast.error("Lỗi khi hủy đơn hàng");
+    }
+    return null;
+  }
+};

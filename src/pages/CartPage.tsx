@@ -16,6 +16,7 @@ function CartPage() {
   const [isModal, setIsModal] = useState(false);
   const [qr, setQR] = useState("");
   const [orderId, setOrderId] = useState("");
+  const [orderData, setOrderData] = useState<any>(null);
 
   useEffect(() => {
     (async () => {
@@ -86,10 +87,11 @@ function CartPage() {
           setIsModal={setIsModal}
           setQR={setQR}
           setOrderId={setOrderId}
+          setOrderData={setOrderData}
         />
       </div>
 
-      {isModal && <ModalQR qr={qr} setIsModal={setIsModal} orderId={orderId} />}
+      {isModal && orderData && <ModalQR qr={qr} setIsModal={setIsModal} orderId={orderId} orderData={orderData} />}
     </>
   ), [cart, cartItems, isModal, qr, orderId, handleNavigateHome, setIsModal]);
 

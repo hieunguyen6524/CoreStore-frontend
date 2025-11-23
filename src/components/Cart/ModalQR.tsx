@@ -4,10 +4,16 @@ import socket from "../../socket";
 interface ModalQRProps {
   orderId: string;
   qr: string;
+  orderData: {
+    paymentId: string;
+    total: number;
+    bankAccount?: string;
+    bankCode?: string;
+  };
   setIsModal: (value: boolean) => void;
 }
 
-export default function ModalQR({ qr, setIsModal, orderId }: ModalQRProps) {
+export default function ModalQR({ qr, setIsModal, orderId, orderData }: ModalQRProps) {
   const [status, setStatus] = useState("");
 
   useEffect(() => {
@@ -20,8 +26,6 @@ export default function ModalQR({ qr, setIsModal, orderId }: ModalQRProps) {
     };
   }, [orderId]);
 
-  console.log(qr);
-
   return (
     <div className="modal-overlay">
       <div className="modal-content">
@@ -29,7 +33,34 @@ export default function ModalQR({ qr, setIsModal, orderId }: ModalQRProps) {
           ✖
         </button>
         <h2>Quét mã để thanh toán</h2>
-        <img src={qr} alt="QR Code" />
+        
+        <div className="qr-section">
+          <img src={qr} alt="QR Code" className="qr-image" />
+        </div>
+
+        <div className="payment-info">
+          <div className="info-row">
+            <span className="label">Mã đơn hàng:</span>
+            <span className="value">{orderData.paymentId}</span>
+          </div>
+          <div className="info-row">
+            <span className="label">Số tiền:</span>
+            <span className="value amount">{orderData.total.toLocaleString("vi-VN")}₫</span>
+          </div>
+          {orderData.bankAccount && (
+            <div className="info-row">
+              <span className="label">Số tài khoản:</span>
+              <span className="value">{orderData.bankAccount}</span>
+            </div>
+          )}
+          {orderData.bankCode && (
+            <div className="info-row">
+              <span className="label">Ngân hàng:</span>
+              <span className="value">{orderData.bankCode}</span>
+            </div>
+          )}
+        </div>
+
         {status === "paid" ? (
           <p className="success">Thanh toán thành công 🎉</p>
         ) : (

@@ -1,11 +1,15 @@
+import { useState } from "react";
 import type { Order } from "../../types/order";
 import { getProductImageUrl } from "../../utils/imageUrl";
+import { cancelMyOrder } from "../../services/orderService";
 
 interface OrderCardProps {
   order: Order;
+  onOrderCancelled?: () => void;
 }
 
-function OrderCard({ order }: OrderCardProps) {
+function OrderCard({ order, onOrderCancelled }: OrderCardProps) {
+  const [cancelling, setCancelling] = useState(false);
   const getStatusColor = (status: string) => {
     switch (status) {
       case "paid":
@@ -27,8 +31,24 @@ function OrderCard({ order }: OrderCardProps) {
         return "Chờ thanh toán";
       case "failed":
         return "Thất bại";
+      case "cancelled":
+        return "Đã hủy";
       default:
         return status;
+    }
+  };
+
+  const handleCancelOrder = async () => {
+    if (!window.confirm("Bạn có chắc chắn muốn hủy đơn hàng này?")) {
+      return;
+    }
+
+    setCancelling(true);
+    const result = await cancelMyOrder(order._id);
+    setCancelling(false);
+
+    if (result && onOrderCancelled) {
+      onOrderCancelled();
     }
   };
 
@@ -86,6 +106,15 @@ function OrderCard({ order }: OrderCardProps) {
             {order.total.toLocaleString("vi-VN")}đ
           </span>
         </div>
+        {order.status === "pending" && (
+          <button
+            className="btn btn--danger btn--small"
+            onClick={handleCancelOrder}
+            disabled={cancelling}
+          >
+            {cancelling ? "Đang hủy..." : "Hủy đơn hàng"}
+          </button>
+        )}
       </div>
     </div>
   );

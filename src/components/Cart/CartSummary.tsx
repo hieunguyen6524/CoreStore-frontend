@@ -4,9 +4,10 @@ import type { Cart } from "../../types/cart";
 
 interface CartSummaryProps {
   cart: Cart[];
-  setIsModal: (value: boolean) => void; // sửa type
+  setIsModal: (value: boolean) => void;
   setQR: (url: string) => void;
   setOrderId: (url: string) => void;
+  setOrderData: (data: any) => void;
 }
 
 function CartSummary({
@@ -14,6 +15,7 @@ function CartSummary({
   setIsModal,
   setQR,
   setOrderId,
+  setOrderData,
 }: CartSummaryProps) {
   const total = useMemo(() => 
     cart.reduce(
@@ -30,8 +32,14 @@ function CartSummary({
     const res = await checkout();
     setQR(res.data.qrUrl);
     setOrderId(res.data.order._id);
+    setOrderData({
+      paymentId: res.data.order.paymentId,
+      total: res.data.order.total,
+      bankAccount: res.data.bankAccount,
+      bankCode: res.data.bankCode,
+    });
     setIsModal(true);
-  }, [setQR, setOrderId, setIsModal]);
+  }, [setQR, setOrderId, setOrderData, setIsModal]);
   return (
     <div className="order-summary">
       <h3>Ước tính</h3>

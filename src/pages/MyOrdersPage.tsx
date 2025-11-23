@@ -55,6 +55,12 @@ function MyOrdersPage() {
             >
               Thất bại
             </button>
+            <button
+              className={`filter-btn ${filter === "cancelled" ? "active" : ""}`}
+              onClick={() => setFilter("cancelled")}
+            >
+              Đã hủy
+            </button>
           </div>
 
           {orders.length === 0 ? (
@@ -71,7 +77,15 @@ function MyOrdersPage() {
           ) : (
             <div className="orders-list">
               {orders.map((order) => (
-                <OrderCard key={order._id} order={order} />
+                <OrderCard
+                  key={order._id}
+                  order={order}
+                  onOrderCancelled={async () => {
+                    const status = filter === "all" ? undefined : filter;
+                    const ordersData = await getOrdersByUser(status);
+                    setOrders(ordersData);
+                  }}
+                />
               ))}
             </div>
           )}
