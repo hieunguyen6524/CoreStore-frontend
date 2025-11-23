@@ -20,6 +20,8 @@ export default function ModalQR({ qr, setIsModal, orderId }: ModalQRProps) {
     };
   }, [orderId]);
 
+  console.log(qr);
+
   return (
     <div className="modal-overlay">
       <div className="modal-content">
