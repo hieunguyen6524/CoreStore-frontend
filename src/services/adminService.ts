@@ -194,6 +194,35 @@ export const adminCancelOrder = async (id: string) => {
   }
 };
 
+export const adminGetDailyInsights = async (params?: {
+  from?: string;
+  to?: string;
+  days?: number;
+}) => {
+  try {
+    const queryParams = new URLSearchParams();
+    if (params?.from) queryParams.append("from", params.from);
+    if (params?.to) queryParams.append("to", params.to);
+    if (params?.days) queryParams.append("days", params.days.toString());
+
+    const url = queryParams.toString()
+      ? `/api/order/insights/daily?${queryParams.toString()}`
+      : `/api/order/insights/daily`;
+
+    const res = await axiosClient.get(url, {
+      withCredentials: true,
+    });
+    return res.data.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      toast.error(
+        error.response?.data?.message || "Không thể tải báo cáo doanh thu"
+      );
+    }
+    return null;
+  }
+};
+
 // Categories
 export const adminGetAllCategories = async () => {
   try {
